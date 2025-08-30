@@ -209,3 +209,6 @@ __marimo__/
 # Project specific
 state.json
 data/
+
+# Personal learning notes
+learning.md
