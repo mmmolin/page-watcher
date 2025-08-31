@@ -1,7 +1,8 @@
 import requests
 import hashlib
-import json ## för att spara
-import os ## för att kolla om filen finns
+import json
+import os
+import config
 
 
 def save_hash(hash_value):
@@ -13,21 +14,23 @@ def load_hash():
         state_data = json.load(file)
         return state_data['hash']
 
-try:
-    response = requests.get('https://ifkgoteborg.se/aktuell-biljettinformation/', timeout=10)
-    html_content = response.text
-    content_hash = hashlib.md5(html_content.encode()).hexdigest()
+def check_for_changes():
+    try:
+        script_config = config.read_config()
+        response = requests.get(script_config['url'], timeout=10)
+        html_content = response.text
+        content_hash = hashlib.md5(html_content.encode()).hexdigest()
 
-    if os.path.exists('state.json'):
-        hash_data = load_hash()
-        if hash_data == content_hash:
-            print('nothing has happened')
+        if os.path.exists('state.json'):
+            hash_data = load_hash()
+            if hash_data == content_hash:
+                return False
+            else:
+                save_hash(content_hash)
+                return True
         else:
             save_hash(content_hash)
-            print('something has happened')
-    else:
-        save_hash(content_hash)
 
-except requests.RequestException as e:
-    print(f'Error fetching page: {e}')
-    exit(1)
+    except requests.RequestException as e:
+        print(f'Error fetching page: {e}')
+        exit(1)
