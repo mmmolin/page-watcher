@@ -208,6 +208,7 @@ __marimo__/
 
 # Project specific
 state.json
+config.yaml
 data/
 
 # Personal learning notes
