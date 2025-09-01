@@ -15,22 +15,17 @@ def load_hash():
         return state_data['hash']
 
 def check_for_changes():
-    try:
-        script_config = config.read_config()
-        response = requests.get(script_config['url'], timeout=10)
-        html_content = response.text
-        content_hash = hashlib.md5(html_content.encode()).hexdigest()
-
-        if os.path.exists('state.json'):
-            hash_data = load_hash()
-            if hash_data == content_hash:
-                return False
-            else:
-                save_hash(content_hash)
-                return True
+    script_config = config.read_config()
+    response = requests.get(script_config['url'], timeout=10)
+    html_content = response.text
+    content_hash = hashlib.md5(html_content.encode()).hexdigest()
+    if os.path.exists('state.json'):
+        hash_data = load_hash()
+        if hash_data == content_hash:
+            return False
         else:
             save_hash(content_hash)
-
-    except requests.RequestException as e:
-        print(f'Error fetching page: {e}')
-        exit(1)
+            return True
+    else:
+        save_hash(content_hash)
+        return False

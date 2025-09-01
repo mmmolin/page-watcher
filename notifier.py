@@ -10,14 +10,12 @@ def send_mail(subject, message):
     password = os.environ.get('EMAIL_PASSWORD')
     if password is None:
         raise ValueError('Missing EMAIL_PASSWORD env variable')
-    try:
-        with smtplib.SMTP(script_config['smtp_server'], script_config['smtp_port']) as server:
-            server.starttls()
-            server.login(script_config['from_email'], password)
-            msg = MIMEText(message)
-            msg['Subject'] = subject
-            msg['From'] = script_config['from_email']
-            msg['To'] = script_config['to_email']
-            server.sendmail(script_config['from_email'], script_config['to_email'], msg.as_string())
-    except Exception as e:
-        print(f'Failed to send email: {e}')
+    
+    with smtplib.SMTP(script_config['smtp_server'], script_config['smtp_port']) as server:
+        server.starttls()
+        server.login(script_config['from_email'], password)
+        msg = MIMEText(message)
+        msg['Subject'] = subject
+        msg['From'] = script_config['from_email']
+        msg['To'] = script_config['to_email']
+        server.sendmail(script_config['from_email'], script_config['to_email'], msg.as_string())
