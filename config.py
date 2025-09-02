@@ -1,7 +1,7 @@
 import yaml
 
 def validate_config(config):
-    required_properties = ['url', 'to_email', 'from_email', 'smtp_server', 'smtp_port']
+    required_properties = ['url', 'to_email', 'from_email', 'smtp_server', 'smtp_port', 'css_selector']
     for rp in required_properties:
         if rp not in config:
             return False
