@@ -18,11 +18,16 @@ def load_hash():
 def check_for_changes():
     script_config = config.read_config()
     selector = script_config['css_selector']
+    sub_selector = script_config['sub_selector']
     response = requests.get(script_config['url'], timeout=10)
     html_content = response.text
     element = BeautifulSoup(html_content, 'html.parser').select_one(selector)
     if element:
-        monitored_text = element.get_text()
+        if sub_selector:
+            sub_elements = element.select(sub_selector)
+            monitored_text = ' '.join(e.get_text() for e in sub_elements)
+        else:
+            monitored_text = element.get_text()
     else:
         return False
     
