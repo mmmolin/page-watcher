@@ -1,0 +1,31 @@
+name: Page Watcher
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 8 * * *'
+
+jobs:
+  run-watcher:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run:
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Set EMAIL_PASSWORD env
+        run: echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD}}" >> $GITHUB_ENV
+
+      - name: Run watcher
+        run: |
+          source venv/bin/activate
+          python main.py
