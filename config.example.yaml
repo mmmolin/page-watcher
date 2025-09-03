@@ -1,0 +1,8 @@
+# config.example.yaml
+url: 'https://example.com'
+to_email: 'your@email.com'
+from_email: 'your@email.com'
+smtp_server: 'smtp.example.com'
+smtp_port: 587
+css_selector: '.entry-content'
+sub_selector: 'div.large-10.cell'

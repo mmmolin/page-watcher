@@ -25,6 +25,16 @@ jobs:
       - name: Set EMAIL_PASSWORD env
         run: echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD}}" >> $GITHUB_ENV
 
+      - name: Create config.yaml
+        run: |
+          echo "url: '${{ secrets.URL }}'" > config.yaml
+          echo "to_email: '${{ secrets.TO_EMAIL }}'" >> config.yaml
+          echo "from_email: '${{ secrets.FROM_EMAIL }}'" >> config.yaml
+          echo "smtp_server: '${{ secrets.SMTP_SERVER }}'" >> config.yaml
+          echo "smtp_port: ${{ secrets.SMTP_PORT }}" >> config.yaml
+          echo "css_selector: '${{ secrets.CSS_SELECTOR }}'" >> config.yaml
+          echo "sub_selector: '${{ secrets.SUB_SELECTOR }}'" >> config.yaml
+
       - name: Run watcher
         run: |
           source venv/bin/activate
