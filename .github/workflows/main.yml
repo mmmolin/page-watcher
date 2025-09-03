@@ -16,6 +16,7 @@ jobs:
         with:
           name: state
           path: .
+        continue-on-error: true
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -52,3 +53,4 @@ jobs:
         with:
           name: state
           path: state.json
+          if-no-files-found: ignore
